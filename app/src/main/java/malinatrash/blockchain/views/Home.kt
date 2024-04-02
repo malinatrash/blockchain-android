@@ -1,8 +1,8 @@
 package malinatrash.blockchain.views
 
 import Blockchain
+import Header
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
@@ -20,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import malinatrash.blockchain.components.Header
 
 @Composable
 fun Home() {
@@ -28,8 +27,6 @@ fun Home() {
 
     Column(modifier = Modifier.fillMaxSize()) {
         Header()
-
-//        Spacer(modifier = Modifier.weight(1f))
 
         Column(modifier = Modifier.weight(3f)) {
             Blockchain(modifier = Modifier.fillMaxSize())

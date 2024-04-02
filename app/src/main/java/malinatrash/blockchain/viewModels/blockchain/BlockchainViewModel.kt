@@ -1,4 +1,4 @@
-package malinatrash.blockchain.viewModels
+package malinatrash.blockchain.viewModels.blockchain
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,30 +7,12 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import malinatrash.blockchain.models.BlockchainData
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.GET
-
-interface BlockchainService {
-    @GET("/chain")
-    suspend fun getBlockchain(): BlockchainData
-}
-
-sealed class BlockchainState {
-    data object Loading : BlockchainState()
-    data class Success(val data: BlockchainData) : BlockchainState()
-    data class Error(val message: String) : BlockchainState()
-}
+import malinatrash.blockchain.api.BlockchainService
+import malinatrash.blockchain.api.retrofit
 
 class BlockchainViewModel : ViewModel() {
     private val _blockchainState = MutableLiveData<BlockchainState>()
     val blockchainState: LiveData<BlockchainState> = _blockchainState
-
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("http://92.51.45.202:8080")
-        .addConverterFactory(MoshiConverterFactory.create())
-        .build()
 
     private val blockchainService = retrofit.create(BlockchainService::class.java)
 

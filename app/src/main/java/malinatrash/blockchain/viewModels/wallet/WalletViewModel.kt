@@ -1,36 +1,17 @@
-package malinatrash.blockchain.viewModels
+package malinatrash.blockchain.viewModels.wallet
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import malinatrash.blockchain.models.WalletData
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.GET
-
-interface WalletService {
-    @GET("/wallet")
-    suspend fun getWallet(): WalletData
-}
-
-sealed class WalletState {
-    object Loading : WalletState()
-    data class Success(val data: WalletData) : WalletState()
-    data class Error(val message: String) : WalletState()
-}
+import malinatrash.blockchain.api.WalletService
+import malinatrash.blockchain.api.retrofit
 
 class WalletViewModel : ViewModel() {
     private val _walletState = MutableLiveData<WalletState>()
-    val walletState: LiveData<WalletState> = _walletState
-
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("http://92.51.45.202:8080")
-        .addConverterFactory(MoshiConverterFactory.create())
-        .build()
+//    val walletState: LiveData<WalletState> = _walletState
 
     private val walletService = retrofit.create(WalletService::class.java)
 
@@ -47,4 +28,6 @@ class WalletViewModel : ViewModel() {
             }
         }
     }
+
+
 }
