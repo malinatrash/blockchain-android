@@ -16,7 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import malinatrash.blockchain.models.Block
 
-
 @Composable
 fun BlockItem(block: Block) {
     Column(
