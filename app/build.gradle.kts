@@ -1,7 +1,10 @@
 plugins {
+    val room_version = "2.6.1"
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("androidx.room") version "$room_version" apply false
 }
+
 
 android {
     namespace = "malinatrash.blockchain"
@@ -50,6 +53,7 @@ android {
 }
 
 dependencies {
+    val room_version = "2.6.1"
     implementation(libs.kotlinx.coroutines.core) // or latest version
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0")
@@ -57,9 +61,8 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0-alpha01")
     implementation ("androidx.compose.runtime:runtime-livedata:1.1.0")
-
-
-
+    implementation ("io.realm:realm-android:10.6.0")
+    implementation("androidx.room:room-runtime:$room_version")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

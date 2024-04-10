@@ -11,20 +11,24 @@ import kotlinx.coroutines.withContext
 import malinatrash.blockchain.api.WalletService
 import malinatrash.blockchain.api.retrofit
 import malinatrash.blockchain.models.WalletData
-import android.app.AlertDialog
 import androidx.compose.runtime.mutableStateOf
+import malinatrash.blockchain.storage.repos.WalletRepository
 
-class WalletViewModel : ViewModel() {
+
+class WalletViewModel(private val repository: WalletRepository) : ViewModel() {
     private val _walletState = MutableLiveData<WalletState>()
     val walletState: LiveData<WalletState> = _walletState
 
     private val walletService = retrofit.create(WalletService::class.java)
 
     var alertIsShown = mutableStateOf(false)
-    fun saveWallet(wallet: WalletData) {
-//        val db = DatabaseHandler(context)
-//        val address = wallet.address
-//        db.addData(address)
+
+    val wallets = repository.getAllWallets()
+
+    fun addWallet(wallet: WalletData) {
+        viewModelScope.launch {
+            repository.insertWallet(wallet)
+        }
     }
 
     fun fetchWallet() {
@@ -33,7 +37,7 @@ class WalletViewModel : ViewModel() {
                 val wallet = withContext(Dispatchers.IO) {
                     walletService.getWallet()
                 }
-                saveWallet(wallet)
+
                 _walletState.value = WalletState.Success(wallet)
                 alertIsShown.value = true
             } catch (e: Exception) {
