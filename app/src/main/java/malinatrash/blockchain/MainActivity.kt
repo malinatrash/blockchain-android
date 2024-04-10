@@ -12,7 +12,7 @@ import androidx.navigation.compose.*
 import androidx.navigation.compose.rememberNavController
 import malinatrash.blockchain.ui.theme.BlockchainTheme
 import malinatrash.blockchain.views.Home
-import malinatrash.blockchain.views.NewTransaction
+import malinatrash.blockchain.views.WalletInfo
 
 
 class MainActivity : ComponentActivity() {
@@ -36,7 +36,7 @@ fun BlockchainApp() {
         ) {
             NavHost(navController, startDestination = "home") {
                 composable("home") { Home() }
-                composable("wallet") { NewTransaction() }
+                composable("wallet") { WalletInfo() }
             }
         }
     }

@@ -27,9 +27,15 @@ fun Home() {
 
     Column(modifier = Modifier.fillMaxSize()) {
         Header()
-
         Column(modifier = Modifier.weight(3f)) {
-            Blockchain()
+            when (selectedTab) {
+                0 -> {
+                    Blockchain()
+                }
+                1 -> {
+                    WalletInfo()
+                }
+            }
         }
 
         NavigationBar(
