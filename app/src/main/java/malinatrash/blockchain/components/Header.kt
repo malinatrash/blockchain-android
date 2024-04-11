@@ -9,15 +9,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import malinatrash.blockchain.storage.LocalStorage
 import malinatrash.blockchain.viewModels.wallet.WalletState
 import malinatrash.blockchain.viewModels.wallet.WalletViewModel
 
 @Composable
 fun Header() {
+    val context = LocalContext.current
+    val localStorage = LocalStorage(context)
+    val viewModel = WalletViewModel(localStorage)
 
-    val viewModel: WalletViewModel = viewModel()
 
     Row(
         modifier = Modifier

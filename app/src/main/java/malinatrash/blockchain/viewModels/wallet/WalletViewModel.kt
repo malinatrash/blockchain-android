@@ -1,6 +1,6 @@
 package malinatrash.blockchain.viewModels.wallet
 
-import android.content.Context
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,11 +11,10 @@ import kotlinx.coroutines.withContext
 import malinatrash.blockchain.api.WalletService
 import malinatrash.blockchain.api.retrofit
 import malinatrash.blockchain.models.WalletData
-import androidx.compose.runtime.mutableStateOf
-import malinatrash.blockchain.storage.repos.WalletRepository
+import malinatrash.blockchain.storage.LocalStorage
 
 
-class WalletViewModel(private val repository: WalletRepository) : ViewModel() {
+class WalletViewModel(private val localStorage: LocalStorage) : ViewModel() {
     private val _walletState = MutableLiveData<WalletState>()
     val walletState: LiveData<WalletState> = _walletState
 
@@ -23,11 +22,10 @@ class WalletViewModel(private val repository: WalletRepository) : ViewModel() {
 
     var alertIsShown = mutableStateOf(false)
 
-    val wallets = repository.getAllWallets()
-
-    fun addWallet(wallet: WalletData) {
-        viewModelScope.launch {
-            repository.insertWallet(wallet)
+    init {
+        val savedAddress = localStorage.getAddress()
+        if (!savedAddress.isNullOrEmpty()) {
+            _walletState.value = WalletState.Success(WalletData(savedAddress))
         }
     }
 
@@ -39,6 +37,7 @@ class WalletViewModel(private val repository: WalletRepository) : ViewModel() {
                 }
 
                 _walletState.value = WalletState.Success(wallet)
+                localStorage.saveAddress(wallet.address)
                 alertIsShown.value = true
             } catch (e: Exception) {
                 _walletState.value = WalletState.Error(e.message ?: "Unknown error occurred")
